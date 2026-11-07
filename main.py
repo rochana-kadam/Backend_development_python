@@ -1,4 +1,6 @@
 from fastapi import FastAPI  #from fastapi package import FastAPI class
+from pydantic import BaseModel # pydantic validates the info recieved from the api
+
 app=FastAPI()  #app is an object of FastAPI class
 
 @app.get("/")  #.get() Defines an API that handles GET requests
@@ -13,4 +15,16 @@ def get_student():
         "name":"Rochana",
         "course":"MCA",
         "college":"IMCC"
+    }
+
+class Student(BaseModel):
+    name:str
+    course:str
+    college:str
+
+@app.post("/student")
+def add_student(student:Student):
+    return{
+        "message": "student added successfully",
+        "student": student
     }
