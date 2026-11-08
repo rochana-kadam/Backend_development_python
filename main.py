@@ -78,3 +78,10 @@ def patch_request(student_id:int, student:StudentUpdate):
 def delete_record(student_id:int):
     del students[student_id]
     return{"message":"record deleted successfully"}
+
+@app.post("/student",status_code=201)
+def add_student(student:Student):
+    new_id=max(students.keys(), default=0)+1
+
+    students[new_id]=student.model_dump()
+    return{"message":"new data added succesfully"}
