@@ -39,6 +39,11 @@ students={
         "name":"Rochana",
         "college":"MMCC",
         "course":"BBA(CA)"
+    },
+    2:{
+        "name":"Jerry",
+        "college":"MMCC",
+        "course":"BBA(CA)"
     }
 }
 
@@ -46,6 +51,11 @@ class Student(BaseModel):
     name:str
     college:str
     course:str
+
+class StudentUpdate(BaseModel):
+    name:str | None=None
+    college:str | None=None  # | None means the field can also be left without a value
+    course:str | None=None  # = None makes the field optional
 
 @app.put("/student/{student_id}") #url contains dynamic student id
 def put_request(student_id:int, student:Student):  #Receives the student's ID   Receives and validates student details
@@ -57,3 +67,10 @@ def put_request(student_id:int, student:Student):  #Receives the student's ID   
 @app.get("/student")
 def display():
     return students
+
+@app.patch("/student/{student_id}")
+def patch_request(student_id:int, student:StudentUpdate):
+    update_data=student.model_dump(exclude_unset=True) # Give me only the fields that the user actually sent in the PATCH request. Ignore the fields they left out.
+    students[student_id].update(update_data)
+    return {"message":"Student partially updated"}
+
