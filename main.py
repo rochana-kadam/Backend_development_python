@@ -74,3 +74,7 @@ def patch_request(student_id:int, student:StudentUpdate):
     students[student_id].update(update_data)
     return {"message":"Student partially updated"}
 
+@app.delete("/student/{student_id}")
+def delete_record(student_id:int):
+    del students[student_id]
+    return{"message":"record deleted successfully"}
